@@ -582,7 +582,6 @@ var _cannonEs = require("cannon-es");
 var _datGui = require("dat.gui");
 var _statsModule = require("three/examples/jsm/libs/stats.module");
 var _statsModuleDefault = parcelHelpers.interopDefault(_statsModule);
-// import { DragControls } from "three/addons/controls/DragControls.js";
 var _dragControlsJs = require("three/examples/jsm/controls/DragControls.js");
 // Basic Three.js Settings - Renderer / Scene / Camera / Controls
 const renderer = new _three.WebGLRenderer({
@@ -590,11 +589,9 @@ const renderer = new _three.WebGLRenderer({
 });
 const scene = new _three.Scene();
 const camera = new _three.PerspectiveCamera(24, window.innerWidth / window.innerHeight, 1, 2000);
-// const controls = new OrbitControls(camera, renderer.domElement);
-const controls = new (0, _dragControlsJs.DragControls)([
-    ...objects
-], camera, renderer.domElement);
-controls.addEventListener("drag", onMouseDrag);
+const controls = new (0, _orbitControlsJs.OrbitControls)(camera, renderer.domElement);
+// const controls = new DragControls([...objects], camera, renderer.domElement);
+// controls.addEventListener("drag", onMouseDrag);
 const timeStep = 1 / 60;
 // Cannon.js Basic Settings
 const world = new _cannonEs.World({
@@ -625,7 +622,7 @@ function init() {
     document.body.appendChild(renderer.domElement);
     camera.position.set(4, 1, 1);
     camera.lookAt(0, 0, 0);
-    // controls.update();
+    controls.update();
     // Lights
     const ambientLight = new _three.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
@@ -780,13 +777,9 @@ function onMouseDrag() {
 function animate(time) {
     updateParticules();
     world.step(timeStep);
-    // sphereBody.position.set(
-    //   // movementRadius * Math.sin(time / 1000),
-    //   0,
-    //   0,
-    //   movementRadius * Math.cos((time / 1000) * speed)
-    // );
-    // sphereMesh.position.copy(sphereBody.position);
+    sphereBody.position.set(// movementRadius * Math.sin(time / 1000),
+    0, 0, movementRadius * Math.cos(time / 1000 * speed));
+    sphereMesh.position.copy(sphereBody.position);
     render();
     stats.update();
 }

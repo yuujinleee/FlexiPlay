@@ -3,7 +3,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as CANNON from "cannon-es";
 import { GUI } from "dat.gui";
 import Stats from "three/examples/jsm/libs/stats.module";
-// import { DragControls } from "three/addons/controls/DragControls.js";
 import { DragControls } from "three/examples/jsm/controls/DragControls.js";
 
 // Basic Three.js Settings - Renderer / Scene / Camera / Controls
@@ -15,9 +14,9 @@ const camera = new THREE.PerspectiveCamera(
   1,
   2000
 );
-// const controls = new OrbitControls(camera, renderer.domElement);
-const controls = new DragControls([...objects], camera, renderer.domElement);
-controls.addEventListener("drag", onMouseDrag);
+const controls = new OrbitControls(camera, renderer.domElement);
+// const controls = new DragControls([...objects], camera, renderer.domElement);
+// controls.addEventListener("drag", onMouseDrag);
 
 const timeStep = 1 / 60;
 
@@ -57,7 +56,7 @@ function init() {
   camera.position.set(4, 1, 1);
   camera.lookAt(0, 0, 0);
 
-  // controls.update();
+  controls.update();
 
   // Lights
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
@@ -248,13 +247,13 @@ function onMouseDrag() {
 function animate(time) {
   updateParticules();
   world.step(timeStep);
-  // sphereBody.position.set(
-  //   // movementRadius * Math.sin(time / 1000),
-  //   0,
-  //   0,
-  //   movementRadius * Math.cos((time / 1000) * speed)
-  // );
-  // sphereMesh.position.copy(sphereBody.position);
+  sphereBody.position.set(
+    // movementRadius * Math.sin(time / 1000),
+    0,
+    0,
+    movementRadius * Math.cos((time / 1000) * speed)
+  );
+  sphereMesh.position.copy(sphereBody.position);
   render();
   stats.update();
 }
